@@ -1,4 +1,4 @@
-import { ModeToggle } from "@/components/mode-toggle"
+import { ModeToggle } from "./ui/mode-toggle"
 import { MainNav } from "@/components/main-nav"
 
 export function SiteHeader() {

@@ -1,9 +1,9 @@
 "use client"
-
+import React from "react"
+import { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -15,11 +15,16 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  ProblemID: z
+    .string()
+    .min(2, {
+      message: "Username must be at least 2 characters.",
+    })
+    .max(50, { message: "Username cannot be greater than 50" }),
 })
 
 export function ProfileForm() {
@@ -27,10 +32,14 @@ export function ProfileForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      ProblemID: "",
     },
   })
+
+  const router = useRouter()
   function onSubmit(values: z.infer<typeof formSchema>) {
+    router.push(`/problems/${values.ProblemID}`)
+
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
@@ -40,15 +49,15 @@ export function ProfileForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="username"
+          name="ProblemID"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel> ProblemID</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="123" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                Enter the problem ID you want to view
               </FormDescription>
               <FormMessage />
             </FormItem>
