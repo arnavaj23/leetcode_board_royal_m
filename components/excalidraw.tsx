@@ -19,7 +19,7 @@ const ExcalidrawWrapper: React.FC = () => {
   ) => {
     console.log("change")
     const content = serializeAsJSON(elements, appState, files, "local")
-    localStorage.setItem("excalidraw", JSON.stringify(content))
+    localStorage.setItem("excalidraw", content)
   }
   const init_data = () => {
     const content = localStorage.getItem("excalidraw")
