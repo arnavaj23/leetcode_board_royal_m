@@ -2,7 +2,7 @@ import ExcalidrawWrapper from "@/components/excalidraw"
 
 export default function Home() {
   return (
-    <div className=" relative flex z-40">
+    <div className=" relative z-40 flex">
       <ExcalidrawWrapper />
     </div>
   )
