@@ -8,10 +8,12 @@ import {
 import Image from "next/image"
 import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types"
 import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types"
-import { images } from "next/dist/build/webpack/config/blocks/images"
-import { type } from "node:os"
+import { useParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 const ExcalidrawWrapper: React.FC = () => {
+  const router = useRouter()
+  const { ProblemID } = useParams()
   const onchange = (
     elements: readonly ExcalidrawElement[],
     appState: AppState,
@@ -19,10 +21,11 @@ const ExcalidrawWrapper: React.FC = () => {
   ) => {
     console.log("change")
     const content = serializeAsJSON(elements, appState, files, "local")
-    localStorage.setItem("excalidraw", content)
+    localStorage.setItem("excalidraw" + ProblemID, content)
   }
   const init_data = () => {
-    const content = localStorage.getItem("excalidraw")
+    const content = localStorage.getItem("excalidraw" + ProblemID)
+
     if (content != null) {
       console.log("init data")
       return JSON.parse(content)
