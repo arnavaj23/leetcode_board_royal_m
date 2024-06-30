@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     if (typeof ProblemID === "string") {
-      document.title = "Problem " + ProblemID
+      document.title = "PB " + ProblemID
       console.log(ProblemID + " wrapper")
     }
   }, [ProblemID])
