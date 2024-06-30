@@ -3,6 +3,7 @@ import { useEffect } from "react"
 
 export default function Home() {
   document.title = "Problem "
+
   useEffect(() => {
     document.title = "LeetCode Board"
     console.log(document.title)
