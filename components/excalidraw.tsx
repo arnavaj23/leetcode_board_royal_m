@@ -10,27 +10,47 @@ import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types"
 import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types"
 import { useParams } from "next/navigation"
 import { useRouter } from "next/navigation"
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore"
+import { db } from "@/components/FireBase/firebase"
 
 const ExcalidrawWrapper: React.FC = () => {
+  console.log("ExcalidrawWrapper")
   const router = useRouter()
   const { ProblemID } = useParams()
-  const onchange = (
+
+  const onchange = async (
     elements: readonly ExcalidrawElement[],
     appState: AppState,
     files: BinaryFiles
   ) => {
     console.log("change")
     const content = serializeAsJSON(elements, appState, files, "local")
-    localStorage.setItem("excalidraw" + ProblemID, content)
-  }
-  const init_data = () => {
-    const content = localStorage.getItem("excalidraw" + ProblemID)
-
-    if (content != null) {
-      console.log("init data")
-      return JSON.parse(content)
+    // localStorage.setItem("excalidraw" + ProblemID, content)
+    try {
+      await setDoc(doc(db, "excalidraw", ProblemID as string), {
+        data: content,
+      })
+      console.log("Data saved to Firestore")
+    } catch (error) {
+      console.error("Error saving data to Firestore:", error)
     }
   }
+  const init_data = async () => {
+    // const content = localStorage.getItem("excalidraw" + ProblemID)
+    //
+    // if (content != null) {
+    //   console.log("init data")
+    //   return JSON.parse(content)
+    // }
+
+    const docref = doc(db, "excalidraw", ProblemID as string)
+    const docSnap = await getDoc(docref)
+    if (docSnap.exists()) {
+      console.log("init data")
+      return JSON.parse(docSnap.data().data)
+    }
+  }
+
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
       <Excalidraw onChange={onchange} initialData={init_data()}>
